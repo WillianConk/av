@@ -1,5 +1,6 @@
 package com.mpagenda.controller;
 
+import com.mpagenda.model.dto.Pesquisa;
 import com.mpagenda.model.entities.Evento;
 import com.mpagenda.model.entities.Fotos;
 import com.mpagenda.model.entities.Usuario;
@@ -7,10 +8,13 @@ import com.mpagenda.model.service.EventoNegocios;
 import com.mpagenda.model.service.FotosNegocios;
 import com.mpagenda.model.service.UsuarioNegocios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @org.springframework.stereotype.Controller
 public class Controller
@@ -29,13 +33,17 @@ public class Controller
 
         return "index";
     }
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("user", new Usuario());
+
+        return "signup_form";
+    }
 
 //  Controller Usuario
 
     @PostMapping("/newUsuario")
-    @ResponseBody
-    public String newUsuario(@RequestBody Usuario usuario) {
-        System.out.println("cheguei aqui");
+    public String newUsuario(Usuario usuario) {
         usuarioNegocios.newUsuario(usuario);
         return "sucesso";
     }
@@ -56,10 +64,18 @@ public class Controller
 
     //  Controller eventos
 
-    @GetMapping("/selectEventos")
+    @PostMapping("/selectEventosUsuario")
     @ResponseBody
-    public String selectEventos(@RequestBody Evento evento){
-        return "sucesso";
+    public List<Evento> selectEventos(@RequestBody Pesquisa pesquisa){
+
+        return eventoNegocios.getAll(pesquisa.getId());
+    }
+
+    @PostMapping("/selectEventosSemelhantes")
+    @ResponseBody
+    public List<Evento> selectEventosSemelhantes(@RequestBody Pesquisa pesquisa){
+
+        return eventoNegocios.selecionarSemelhantes(pesquisa.getPesquisa());
     }
 
     @PostMapping("/newEvento")
@@ -136,5 +152,7 @@ public class Controller
         fotosNegocios.deleteFotos(fotos);
         return "sucesso";
     }
+
+
 
 }
