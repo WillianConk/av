@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Configuration
 public class EventoNegocios {
@@ -47,6 +49,23 @@ public class EventoNegocios {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+
+    public List<Evento> getAll(Long id){
+
+        List<Evento> lista = eventoRepository.findByIdUsuario(id);
+        return lista;
+
+
+    }
+
+    public List<Evento> selecionarSemelhantes(String pesquisa){
+
+        List<Evento> lista = eventoRepository.findByDescricaoContaining(pesquisa);
+        return lista;
+
 
     }
 }

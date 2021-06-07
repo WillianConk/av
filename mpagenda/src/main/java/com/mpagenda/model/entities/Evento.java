@@ -1,5 +1,7 @@
 package com.mpagenda.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -16,6 +18,7 @@ public class Evento {
     @Column(nullable = false)
     private String descricao;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="id_usuario", nullable=false)
     private Usuario usuario;

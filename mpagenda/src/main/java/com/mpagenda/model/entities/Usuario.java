@@ -1,5 +1,7 @@
 package com.mpagenda.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -22,9 +24,11 @@ public class Usuario {
     @Column(nullable = false)
     private String senha;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Evento> eventos;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Fotos> fotos;
 
